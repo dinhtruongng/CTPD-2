@@ -1,0 +1,19 @@
+{
+  "Qwen-2.5-7B->Llama-3.2-1B": {
+    "pair": "Qwen-2.5-7B->Llama-3.2-1B",
+    "teacher": "Qwen/Qwen2.5-7B",
+    "student": "meta-llama/Llama-3.2-1B",
+    "vocab_overlap_jaccard_pct": 64.3,
+    "vocab_size_teacher": 151643,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.017,
+    "tok_per_span_student": 1.0,
+    "ts_ratio": 1.017,
+    "mean_span_chars": 4.748,
+    "n_spans": 22882,
+    "pct_1to1": 98.69,
+    "pct_1ton": 0.0,
+    "pct_nto1": 1.31,
+    "pct_ntom": 0.0
+  }
+}

@@ -1,0 +1,273 @@
+Loading UltraFeedback (train) from exlaw/tis-dpo-data ...
+Repo card metadata block was not found. Setting CardData to empty.
+Using 2000 examples (chosen+rejected -> 4000 responses).
+
+=== Qwen-2.5-14B->Llama-3.1-8B ===
+  teacher=Qwen/Qwen2.5-14B  student=meta-llama/Llama-3.1-8B
+{
+  "pair": "Qwen-2.5-14B->Llama-3.1-8B",
+  "teacher": "Qwen/Qwen2.5-14B",
+  "student": "meta-llama/Llama-3.1-8B",
+  "vocab_overlap_jaccard_pct": 64.3,
+  "vocab_size_teacher": 151643,
+  "vocab_size_student": 128000,
+  "tok_per_span_teacher": 1.005,
+  "tok_per_span_student": 1.0,
+  "ts_ratio": 1.011,
+  "mean_span_chars": 4.783,
+  "n_spans": 1429145,
+  "pct_1to1": 98.6,
+  "pct_1ton": 0.0,
+  "pct_nto1": 0.8,
+  "pct_ntom": 0.6
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Qwen-2.5-7B->Llama-3.2-1B ===
+  teacher=Qwen/Qwen2.5-7B  student=meta-llama/Llama-3.2-1B
+{
+  "pair": "Qwen-2.5-7B->Llama-3.2-1B",
+  "teacher": "Qwen/Qwen2.5-7B",
+  "student": "meta-llama/Llama-3.2-1B",
+  "vocab_overlap_jaccard_pct": 64.3,
+  "vocab_size_teacher": 151643,
+  "vocab_size_student": 128000,
+  "tok_per_span_teacher": 1.005,
+  "tok_per_span_student": 1.0,
+  "ts_ratio": 1.011,
+  "mean_span_chars": 4.783,
+  "n_spans": 1429145,
+  "pct_1to1": 98.6,
+  "pct_1ton": 0.0,
+  "pct_nto1": 0.8,
+  "pct_ntom": 0.6
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Gemma-2-9B->Llama-3.2-1B ===
+  teacher=google/gemma-2-9b  student=meta-llama/Llama-3.2-1B
+{
+  "pair": "Gemma-2-9B->Llama-3.2-1B",
+  "teacher": "google/gemma-2-9b",
+  "student": "meta-llama/Llama-3.2-1B",
+  "vocab_overlap_jaccard_pct": 7.1,
+  "vocab_size_teacher": 256000,
+  "vocab_size_student": 128000,
+  "tok_per_span_teacher": 1.086,
+  "tok_per_span_student": 1.047,
+  "ts_ratio": 1.053,
+  "mean_span_chars": 5.008,
+  "n_spans": 1365132,
+  "pct_1to1": 87.19,
+  "pct_1ton": 1.78,
+  "pct_nto1": 7.13,
+  "pct_ntom": 3.9
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Qwen-2.5-7B->Gemma-2-2B ===
+  teacher=Qwen/Qwen2.5-7B  student=google/gemma-2-2b
+{
+  "pair": "Qwen-2.5-7B->Gemma-2-2B",
+  "teacher": "Qwen/Qwen2.5-7B",
+  "student": "google/gemma-2-2b",
+  "vocab_overlap_jaccard_pct": 6.6,
+  "vocab_size_teacher": 151643,
+  "vocab_size_student": 256000,
+  "tok_per_span_teacher": 1.043,
+  "tok_per_span_student": 1.09,
+  "ts_ratio": 0.96,
+  "mean_span_chars": 4.952,
+  "n_spans": 1380565,
+  "pct_1to1": 89.17,
+  "pct_1ton": 6.33,
+  "pct_nto1": 1.8,
+  "pct_ntom": 2.71
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Mistral-7B->Llama-3.2-1B ===
+  teacher=mistralai/Mistral-7B-v0.3  student=meta-llama/Llama-3.2-1B
+{
+  "pair": "Mistral-7B->Llama-3.2-1B",
+  "teacher": "mistralai/Mistral-7B-v0.3",
+  "student": "meta-llama/Llama-3.2-1B",
+  "vocab_overlap_jaccard_pct": 7.1,
+  "vocab_size_teacher": 32768,
+  "vocab_size_student": 128000,
+  "tok_per_span_teacher": 1.165,
+  "tok_per_span_student": 1.006,
+  "ts_ratio": 1.172,
+  "mean_span_chars": 4.812,
+  "n_spans": 1420541,
+  "pct_1to1": 83.93,
+  "pct_1ton": 0.07,
+  "pct_nto1": 14.25,
+  "pct_ntom": 1.76
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Llama-3.1-8B->Qwen-2.5-1.5B ===
+  teacher=meta-llama/Llama-3.1-8B  student=Qwen/Qwen2.5-1.5B
+{
+  "pair": "Llama-3.1-8B->Qwen-2.5-1.5B",
+  "teacher": "meta-llama/Llama-3.1-8B",
+  "student": "Qwen/Qwen2.5-1.5B",
+  "vocab_overlap_jaccard_pct": 64.3,
+  "vocab_size_teacher": 128000,
+  "vocab_size_student": 151643,
+  "tok_per_span_teacher": 0.997,
+  "tok_per_span_student": 1.011,
+  "ts_ratio": 0.989,
+  "mean_span_chars": 4.783,
+  "n_spans": 1429116,
+  "pct_1to1": 98.87,
+  "pct_1ton": 0.79,
+  "pct_nto1": 0.01,
+  "pct_ntom": 0.34
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+=== Llama-3.1-8B->Llama-3.2-1B ===
+  teacher=meta-llama/Llama-3.1-8B  student=meta-llama/Llama-3.2-1B
+{
+  "pair": "Llama-3.1-8B->Llama-3.2-1B",
+  "teacher": "meta-llama/Llama-3.1-8B",
+  "student": "meta-llama/Llama-3.2-1B",
+  "vocab_overlap_jaccard_pct": 100.0,
+  "vocab_size_teacher": 128000,
+  "vocab_size_student": 128000,
+  "tok_per_span_teacher": 1.0,
+  "tok_per_span_student": 1.0,
+  "ts_ratio": 1.0,
+  "mean_span_chars": 4.783,
+  "n_spans": 1429255,
+  "pct_1to1": 99.99,
+  "pct_1ton": 0.0,
+  "pct_nto1": 0.0,
+  "pct_ntom": 0.01
+}
+  (written to journal_results/mismatch/mismatch_stats.json)
+
+ALL DONE. Summary:
+{
+  "Qwen-2.5-14B->Llama-3.1-8B": {
+    "pair": "Qwen-2.5-14B->Llama-3.1-8B",
+    "teacher": "Qwen/Qwen2.5-14B",
+    "student": "meta-llama/Llama-3.1-8B",
+    "vocab_overlap_jaccard_pct": 64.3,
+    "vocab_size_teacher": 151643,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.005,
+    "tok_per_span_student": 1.0,
+    "ts_ratio": 1.011,
+    "mean_span_chars": 4.783,
+    "n_spans": 1429145,
+    "pct_1to1": 98.6,
+    "pct_1ton": 0.0,
+    "pct_nto1": 0.8,
+    "pct_ntom": 0.6
+  },
+  "Qwen-2.5-7B->Llama-3.2-1B": {
+    "pair": "Qwen-2.5-7B->Llama-3.2-1B",
+    "teacher": "Qwen/Qwen2.5-7B",
+    "student": "meta-llama/Llama-3.2-1B",
+    "vocab_overlap_jaccard_pct": 64.3,
+    "vocab_size_teacher": 151643,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.005,
+    "tok_per_span_student": 1.0,
+    "ts_ratio": 1.011,
+    "mean_span_chars": 4.783,
+    "n_spans": 1429145,
+    "pct_1to1": 98.6,
+    "pct_1ton": 0.0,
+    "pct_nto1": 0.8,
+    "pct_ntom": 0.6
+  },
+  "Gemma-2-9B->Llama-3.2-1B": {
+    "pair": "Gemma-2-9B->Llama-3.2-1B",
+    "teacher": "google/gemma-2-9b",
+    "student": "meta-llama/Llama-3.2-1B",
+    "vocab_overlap_jaccard_pct": 7.1,
+    "vocab_size_teacher": 256000,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.086,
+    "tok_per_span_student": 1.047,
+    "ts_ratio": 1.053,
+    "mean_span_chars": 5.008,
+    "n_spans": 1365132,
+    "pct_1to1": 87.19,
+    "pct_1ton": 1.78,
+    "pct_nto1": 7.13,
+    "pct_ntom": 3.9
+  },
+  "Qwen-2.5-7B->Gemma-2-2B": {
+    "pair": "Qwen-2.5-7B->Gemma-2-2B",
+    "teacher": "Qwen/Qwen2.5-7B",
+    "student": "google/gemma-2-2b",
+    "vocab_overlap_jaccard_pct": 6.6,
+    "vocab_size_teacher": 151643,
+    "vocab_size_student": 256000,
+    "tok_per_span_teacher": 1.043,
+    "tok_per_span_student": 1.09,
+    "ts_ratio": 0.96,
+    "mean_span_chars": 4.952,
+    "n_spans": 1380565,
+    "pct_1to1": 89.17,
+    "pct_1ton": 6.33,
+    "pct_nto1": 1.8,
+    "pct_ntom": 2.71
+  },
+  "Mistral-7B->Llama-3.2-1B": {
+    "pair": "Mistral-7B->Llama-3.2-1B",
+    "teacher": "mistralai/Mistral-7B-v0.3",
+    "student": "meta-llama/Llama-3.2-1B",
+    "vocab_overlap_jaccard_pct": 7.1,
+    "vocab_size_teacher": 32768,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.165,
+    "tok_per_span_student": 1.006,
+    "ts_ratio": 1.172,
+    "mean_span_chars": 4.812,
+    "n_spans": 1420541,
+    "pct_1to1": 83.93,
+    "pct_1ton": 0.07,
+    "pct_nto1": 14.25,
+    "pct_ntom": 1.76
+  },
+  "Llama-3.1-8B->Qwen-2.5-1.5B": {
+    "pair": "Llama-3.1-8B->Qwen-2.5-1.5B",
+    "teacher": "meta-llama/Llama-3.1-8B",
+    "student": "Qwen/Qwen2.5-1.5B",
+    "vocab_overlap_jaccard_pct": 64.3,
+    "vocab_size_teacher": 128000,
+    "vocab_size_student": 151643,
+    "tok_per_span_teacher": 0.997,
+    "tok_per_span_student": 1.011,
+    "ts_ratio": 0.989,
+    "mean_span_chars": 4.783,
+    "n_spans": 1429116,
+    "pct_1to1": 98.87,
+    "pct_1ton": 0.79,
+    "pct_nto1": 0.01,
+    "pct_ntom": 0.34
+  },
+  "Llama-3.1-8B->Llama-3.2-1B": {
+    "pair": "Llama-3.1-8B->Llama-3.2-1B",
+    "teacher": "meta-llama/Llama-3.1-8B",
+    "student": "meta-llama/Llama-3.2-1B",
+    "vocab_overlap_jaccard_pct": 100.0,
+    "vocab_size_teacher": 128000,
+    "vocab_size_student": 128000,
+    "tok_per_span_teacher": 1.0,
+    "tok_per_span_student": 1.0,
+    "ts_ratio": 1.0,
+    "mean_span_chars": 4.783,
+    "n_spans": 1429255,
+    "pct_1to1": 99.99,
+    "pct_1ton": 0.0,
+    "pct_nto1": 0.0,
+    "pct_ntom": 0.01
+  }
+}
