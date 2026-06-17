@@ -1,0 +1,18 @@
+# pixi environments
+.pixi
+*.egg-info
+
+# temp file
+reference
+temp
+
+# data too large
+data
+
+# cache
+src/prefkd/utils/__pycache__
+src/prefkd/__pycache__
+
+KD_tisdpo
+eval_output
+

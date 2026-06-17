@@ -1,0 +1,33 @@
+# gpu_env.yml  ——  CUDA 11.8 + H100‑ready
+name: dskd
+channels:
+  - pytorch
+  - nvidia
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.11
+  - pytorch=2.3.1
+  # - torchvision=0.17.1
+  - pytorch-cuda=12.1     # pulls in cudnn, nccl, etc. automatically :contentReference[oaicite:8]{index=8}
+  - deepspeed=0.17.2
+  - transformers=4.45.0
+  - tokenizers>=0.20,<0.21
+  - peft=0.8.2
+  - accelerate=1.8.1
+  - datasets=2.19.1
+  - numpy<1.25
+  - scipy>=1.11
+  - mkl=2023.2
+  - intel-openmp
+  - libaio                # enables DeepSpeed NVMe async‑IO 
+  - rouge-score
+  - absl-py
+  - editdistance
+  # - pip=24.1.2
+  # - pip:
+  #     - editdistance
+variables:
+  PYTHONNOUSERSITE: "1"   # blocks ~/.local wheels from shadowing the env :contentReference[oaicite:10]{index=10}
+
+

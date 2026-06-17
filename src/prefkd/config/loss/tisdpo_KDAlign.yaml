@@ -1,0 +1,16 @@
+name: "tisdpo_KDAlign"
+
+beta: 0.5
+
+# dskd
+kd_rate: 0.5
+kd_temperature: 2.0
+teacher_temperature: 2.0
+kd_objective: "forward_kl"
+label_smoothing: 0.0
+
+# common
+alpha: 0.5
+
+
+

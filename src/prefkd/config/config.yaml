@@ -1,0 +1,85 @@
+# SEED
+seed: 0
+
+#mode
+policy_mode: student
+reference_mode: null
+
+# DATA
+base_data_dir: data
+
+datasets: 
+log_dir: "log"
+reverse_dataset: false
+
+# debug mode
+debug: false
+save_checkpoint: true
+# tracking
+wandb: 
+  enabled: true
+  entity: null
+  project: 
+
+output_dir: "output"
+local_run_dir: ${get_local_run_dir:${exp_name},${output_dir}}
+# prevent wandb from logging more than once per minimum_log_interval_secs
+minimum_log_interval_secs: 0.0
+# name for this experiment in the local run directory and on wandb
+exp_name: ${build_exp_name:${loss.name},${model.policy_name_or_path},${datasets},${reverse_dataset},${transform},${model.reference_name_or_path}}
+
+save_repo: 
+# the trainer class to use (e.g. BasicTrainer, FSDPTrainer, TensorParallelTrainer)
+trainer: FSDPTrainer
+
+# the port to use for FSDP
+fsdp_port: null
+
+# whether or not to generate samples during evaluation; disable for FSDP/TensorParallel
+#   is recommended, because they are slow
+sample_during_eval: false
+
+# the number of examples to evaluate on (and sample from, if sample_during_eval is true)
+n_eval_examples: 256
+
+# how many model samples to generate during evaluation
+n_eval_model_samples: 16
+
+# training params
+lr: 2e-6
+# number of steps to accumulate over for each batch
+#   (e.g. if batch_size=4 and gradient_accumulation_steps=2, then we will
+#   accumulate gradients over 2 microbatches of size 2)
+gradient_accumulation_steps: 8
+# the maximum gradient norm to clip to
+max_grad_norm: 1.0
+eval_batch_size: 8
+batch_size: 8
+
+n_epochs: 1
+n_examples: null
+
+max_length: 512
+max_prompt_length: 128
+# whether or not to use activation/gradient checkpointing
+activation_checkpointing: false
+
+optimizer: AdamW
+warmup_steps: 27
+total_steps: 885
+scheduler: linear
+
+eval_every: 5632
+# whether to eval at the very beginning of training
+do_first_eval: false
+
+projector_config_path: config/projector/projector_config.json
+projector_path: null
+projector_lr: 1e-3
+defaults:
+  - _self_
+  - model: null
+  - loss: sft
+  - transform: default
+  # - projector: default
+

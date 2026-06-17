@@ -1,0 +1,11 @@
+name: tisdpo
+
+beta: 0.1
+
+alpha: 0.5
+
+label_smoothing: 0
+
+token_level: false
+
+reference_free: false

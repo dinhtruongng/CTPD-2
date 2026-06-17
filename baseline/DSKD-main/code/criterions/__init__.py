@@ -1,0 +1,24 @@
+from .cross_entropy_loss import CrossEntropyLoss
+from .dual_space_kd import DualSpaceKD
+from .dual_space_kd_with_cross_model_attention import DualSpaceKDWithCMA
+from .min_edit_dis_kld import MinEditDisForwardKLD
+from .multi_level_ot import MULTI_LEVEL_OT
+from .universal_logit_distillation import UniversalLogitDistillation
+from .various_divergence import VariousDivergence
+
+criterion_list = {
+    "cross_entropy": CrossEntropyLoss,
+    "various_divergence": VariousDivergence,
+    "dual_space_kd": DualSpaceKD,
+    "dual_space_kd_with_cma": DualSpaceKDWithCMA,
+    "universal_logit_distillation": UniversalLogitDistillation,
+    "min_edit_dis_kld": MinEditDisForwardKLD,
+    "multi_level_ot": MULTI_LEVEL_OT,
+}
+
+
+def build_criterion(args):
+    if criterion_list.get(args.criterion, None) is not None:
+        return criterion_list[args.criterion](args)
+    else:
+        raise NameError(f"Undefined criterion for {args.criterion}!")

@@ -1,0 +1,7 @@
+name: KD_tisdpo
+
+beta: 0.5
+
+label_smoothing: 0.0
+
+average_log_prob: false
