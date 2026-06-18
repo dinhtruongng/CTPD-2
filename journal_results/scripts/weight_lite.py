@@ -31,7 +31,7 @@ if _PKGDIR not in sys.path:
     sys.path.insert(0, os.path.abspath(_PKGDIR))
 
 import torch
-from datasets import concatenate_datasets, load_from_disk
+from datasets import concatenate_datasets, load_dataset
 from loss.loss import get_ptoken_logps, prompt_remove
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
@@ -161,7 +161,7 @@ def process_dataset_shard(
 
 
 def parallel_process_file(args):
-    data = load_from_disk(args.data_path)
+    data = load_dataset(args.data_path, split=args.split)
     available_gpus = torch.cuda.device_count()
     num_gpus = min(args.num_gpus, available_gpus)
     if num_gpus == 0:

@@ -39,7 +39,7 @@ tea_pos)
     loss=dpo log_dir=pairB_tea_positive \
     policy_mode=teacher reference_mode=teacher \
     loss.beta=0.5 loss.label_smoothing=0 n_epochs=1 max_grad_norm=3.0 \
-    gradient_accumulation_steps=1 batch_size=16 eval_batch_size=16 \
+    gradient_accumulation_steps=2 batch_size=8 eval_batch_size=8 \
     total_steps=3541 warmup_steps=354 eval_every=566 \
     lr=5e-7 scheduler=cosine save_checkpoint=true \
     trainer=FSDPTrainer sample_during_eval=false \
