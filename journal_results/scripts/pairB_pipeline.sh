@@ -16,7 +16,8 @@ JR=$ROOT/journal_results
 TEACHER=$JR/models/mistralai_Mistral-7B-Instruct-v0.3
 STUDENT=$JR/models/meta-llama_Llama-3.2-1B-Instruct
 DATA=$JR/data/pairB
-export CUDA_VISIBLE_DEVICES=4,5,6,7
+# Do NOT export CUDA_VISIBLE_DEVICES here — the caller sets one GPU per job
+# so FSDP spawns 1 process, not N processes fighting for the same NCCL port.
 
 cd $ROOT/src/prefkd
 mkdir -p $JR/weights $JR/logs
