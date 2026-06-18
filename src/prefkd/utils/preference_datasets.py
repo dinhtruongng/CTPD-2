@@ -708,10 +708,24 @@ class PrefData(Dataset):
         transform_config=None,
         reverse_dataset: bool = False,
     ):
-        if os.path.isdir(data_path) and os.path.exists(os.path.join(data_path, "dataset_info.json")):
+        train_dir = os.path.join(data_path, train_test_split)
+        if os.path.isdir(train_dir) and os.path.exists(os.path.join(train_dir, "dataset_info.json")):
+            self.data = datasets.load_from_disk(train_dir)
+        elif os.path.isdir(data_path) and os.path.exists(os.path.join(data_path, "dataset_info.json")):
             self.data = datasets.load_from_disk(data_path)
         else:
-            self.data = datasets.load_dataset(data_path, split=train_test_split)
+            try:
+                self.data = datasets.load_dataset(data_path, split=train_test_split)
+            except ValueError as e:
+                if "test" in str(e) and train_test_split == "test":
+                    # No test split — reuse train (e.g. built with save_to_disk)
+                    train_dir = os.path.join(data_path, "train")
+                    if os.path.isdir(train_dir) and os.path.exists(os.path.join(train_dir, "dataset_info.json")):
+                        self.data = datasets.load_from_disk(train_dir)
+                    else:
+                        self.data = datasets.load_dataset(data_path, split="train")
+                else:
+                    raise
         self.sft_mode = sft_mode
         self.reverse_dataset = reverse_dataset
         self.transform_config = transform_config
