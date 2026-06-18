@@ -21,7 +21,14 @@ the cache makes the weight source invisible to the optimizer.
 import argparse
 import multiprocessing as mp
 import os
+import sys
 import time
+
+# Ensure CTPD-2/src/prefkd is on sys.path for `from loss.loss import ...`
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+_PKGDIR = os.path.join(_SCRIPT_DIR, "..", "..", "src", "prefkd")
+if _PKGDIR not in sys.path:
+    sys.path.insert(0, os.path.abspath(_PKGDIR))
 
 import torch
 from datasets import concatenate_datasets, load_dataset
