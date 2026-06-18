@@ -12,8 +12,13 @@ import torch
 import torch.distributed as dist
 import tqdm
 import wandb
-from loss.aligment_loss.distiller import Distiller
-from loss.aligment_loss.dual_space_kd_with_cross_model_attention import DualSpaceKDWithCMA
+# Optional imports only needed by tisdpo_KDAlign loss
+try:
+    from loss.aligment_loss.distiller import Distiller
+    from loss.aligment_loss.dual_space_kd_with_cross_model_attention import DualSpaceKDWithCMA
+except ImportError:
+    Distiller = None
+    DualSpaceKDWithCMA = None
 from loss.loss import (
     _get_batch_logps,
     _get_batch_logps_KDtisdpo,
