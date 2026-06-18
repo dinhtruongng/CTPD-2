@@ -15,6 +15,11 @@ write access. Output feeds weight.py / weight_lite.py / CTPD.sh directly.
 import argparse
 import json
 import os
+import sys
+
+# CTPD-2/src/prefkd/utils has the alignment/tokenisation helpers
+_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, os.path.join(_SCRIPT_DIR, "..", "..", "src", "prefkd", "utils"))
 
 from datasets import load_dataset
 from parent_token_dict import batch_find_parent_token
