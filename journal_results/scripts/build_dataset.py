@@ -21,7 +21,7 @@ import sys
 _SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, os.path.join(_SCRIPT_DIR, "..", "..", "src", "prefkd", "utils"))
 
-from datasets import DatasetDict, load_dataset
+from datasets import load_dataset
 from parent_token_dict import batch_find_parent_token
 from tokenize_func import tokenize_batch
 from transformers import AutoTokenizer
@@ -116,20 +116,17 @@ def main():
         args.hf_dataset,
         data_files={"train": args.train_file, "test": args.test_file},
     )
-    built = {}
     for split in args.splits.split(","):
         split = split.strip()
         src = raw[split]
         if split == "train" and args.limit_train > 0:
             src = src.select(range(min(args.limit_train, len(src))))
         print(f"[{split}] building {len(src)} examples", flush=True)
-        built[split] = build_split(src, student_tok, teacher_tok, args.max_length, args.max_prompt_length)
-        print(f"[{split}] done ({len(built[split])} rows)", flush=True)
-
-    dd = DatasetDict(built)
-    os.makedirs(args.output_dir, exist_ok=True)
-    dd.save_to_disk(args.output_dir)
-    print(f"DatasetDict saved -> {args.output_dir} ({list(dd.keys())})", flush=True)
+        out = build_split(src, student_tok, teacher_tok, args.max_length, args.max_prompt_length)
+        jsonl_path = os.path.join(args.output_dir, f"{split}.jsonl")
+        os.makedirs(args.output_dir, exist_ok=True)
+        out.to_json(jsonl_path)
+        print(f"[{split}] saved -> {jsonl_path} ({len(out)} rows)", flush=True)
 
 
 if __name__ == "__main__":
