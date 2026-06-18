@@ -80,6 +80,13 @@ def build_split(raw, student_tok, teacher_tok, max_length, max_prompt_length):
     ds = ds.filter(lambda x: "</s>" not in x["prompt"])
     ds = _tok(ds, teacher_tok, max_length, max_prompt_length).rename_columns(TEACHER_RENAME)
     ds = ds.filter(lambda x: x["rejected"] != "")
+    # Some responses tokenize to nothing (e.g. BOS-only after truncation);
+    # find_parent_token crashes on empty offset mappings.
+    for side in ("chosen", "rejected"):
+        ds = ds.filter(
+            lambda x, s=side: len(x[f"{s}_student_offset_mapping"]) > 0
+            and len(x[f"{s}_teacher_offset_mapping"]) > 0
+        )
     ds = ds.map(lambda ex: _align_and_listify(ex, "chosen"),
                 batched=True, batch_size=32, num_proc=8)
     ds = ds.map(lambda ex: _align_and_listify(ex, "rejected"),
