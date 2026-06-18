@@ -52,11 +52,19 @@ def _tok(ds, tokenizer, max_length, max_prompt_length):
     )
 
 
-def _convert_tolist(examples):
-    for k in list(examples):
-        if "parent" in k and "dict" in k:
-            d = [json.loads(i) for i in examples[k]]
-            examples[k.replace("dict", "list")] = [list(dd.values()) for dd in d]
+def _align_and_listify(examples, mode):
+    """Call batch_find_parent_token AND convert tuple-keyed dicts to lists.
+
+    Arrow cannot serialise dicts with tuple keys (e.g. {(0,5): [1,2]}), so we
+    must inline the parent_dict -> parent_list conversion inside the same map
+    call, before Arrow sees the intermediate representation.
+    """
+    examples = batch_find_parent_token(examples, mode)
+    for side in ("student", "teacher"):
+        dcol = f"{mode}_{side}_parent_dict"
+        lcol = f"{mode}_{side}_parent_list"
+        examples[lcol] = [list(d.values()) for d in examples[dcol]]
+        del examples[dcol]
     return examples
 
 
@@ -72,11 +80,10 @@ def build_split(raw, student_tok, teacher_tok, max_length, max_prompt_length):
     ds = ds.filter(lambda x: "</s>" not in x["prompt"])
     ds = _tok(ds, teacher_tok, max_length, max_prompt_length).rename_columns(TEACHER_RENAME)
     ds = ds.filter(lambda x: x["rejected"] != "")
-    ds = ds.map(lambda ex: batch_find_parent_token(ex, mode="chosen"),
+    ds = ds.map(lambda ex: _align_and_listify(ex, "chosen"),
                 batched=True, batch_size=32, num_proc=8)
-    ds = ds.map(lambda ex: batch_find_parent_token(ex, mode="rejected"),
+    ds = ds.map(lambda ex: _align_and_listify(ex, "rejected"),
                 batched=True, batch_size=32, num_proc=8)
-    ds = ds.map(_convert_tolist, batched=True, batch_size=32, num_proc=8)
     ds = ds.map(_add_dummy_weight, batched=False, num_proc=8)
     return ds
 
