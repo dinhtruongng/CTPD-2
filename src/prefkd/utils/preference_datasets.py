@@ -1,4 +1,5 @@
 import json
+import os
 import random
 import warnings
 from collections import defaultdict
@@ -707,7 +708,10 @@ class PrefData(Dataset):
         transform_config=None,
         reverse_dataset: bool = False,
     ):
-        self.data = datasets.load_dataset(data_path, split=train_test_split)
+        if os.path.isdir(data_path) and os.path.exists(os.path.join(data_path, "dataset_info.json")):
+            self.data = datasets.load_from_disk(data_path)
+        else:
+            self.data = datasets.load_dataset(data_path, split=train_test_split)
         self.sft_mode = sft_mode
         self.reverse_dataset = reverse_dataset
         self.transform_config = transform_config
