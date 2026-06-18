@@ -58,11 +58,12 @@ tea_neg)
     loss=dpo log_dir=pairB_tea_negative \
     policy_mode=teacher reference_mode=teacher \
     loss.beta=0.02 loss.label_smoothing=0.0 n_epochs=3 max_grad_norm=1.0 \
-    gradient_accumulation_steps=1 batch_size=8 eval_batch_size=8 \
+    gradient_accumulation_steps=2 batch_size=4 eval_batch_size=4 \
     total_steps=14164 warmup_steps=708 eval_every=1112 \
     lr=1e-5 scheduler=cosine save_checkpoint=true \
+    activation_checkpointing=true \
     trainer=FSDPTrainer sample_during_eval=false \
-    activation_checkpointing=false reverse_dataset=true \
+    reverse_dataset=true \
     datasets=$DATA ;;
 
 # ---- 3. full-CTPD weight generation (pos vs neg teacher) --------------------
