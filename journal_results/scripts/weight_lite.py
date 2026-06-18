@@ -81,23 +81,25 @@ def lite_span_weights(
         disable=not torch.cuda.is_available(),
     )
 
-    # which side carries the aligned spans we weight: student vocab (student_all=1)
-    side = "student" if student_all == 1 else "teacher"
+    # ALWAYS feed teacher-tokenized inputs to the teacher model — student
+    # token IDs may be OOB when teacher vocab < student vocab (e.g. Mistral 32K
+    # vs Llama 128K). The parent_list span structure is identical regardless.
+    model_side = "teacher"
 
     chosen_all, rejected_all = [], []
     for batch in dataloader:
         c_inputs = {
-            "input_ids": batch[f"chosen_{side}_input_ids"].to(device),
-            "attention_mask": batch[f"chosen_{side}_attention_mask"].to(device),
+            "input_ids": batch[f"chosen_{model_side}_input_ids"].to(device),
+            "attention_mask": batch[f"chosen_{model_side}_attention_mask"].to(device),
         }
         r_inputs = {
-            "input_ids": batch[f"rejected_{side}_input_ids"].to(device),
-            "attention_mask": batch[f"rejected_{side}_attention_mask"].to(device),
+            "input_ids": batch[f"rejected_{model_side}_input_ids"].to(device),
+            "attention_mask": batch[f"rejected_{model_side}_attention_mask"].to(device),
         }
-        c_labels = batch[f"chosen_{side}_labels"].to(device)
-        r_labels = batch[f"rejected_{side}_labels"].to(device)
-        c_parent = batch[f"chosen_{side}_parent_list"].to(device)
-        r_parent = batch[f"rejected_{side}_parent_list"].to(device)
+        c_labels = batch[f"chosen_{model_side}_labels"].to(device)
+        r_labels = batch[f"rejected_{model_side}_labels"].to(device)
+        c_parent = batch[f"chosen_{model_side}_parent_list"].to(device)
+        r_parent = batch[f"rejected_{model_side}_parent_list"].to(device)
 
         c_logps = _span_logps(teacher_model, c_inputs, c_labels, c_parent, average_log_prob, device)
         r_logps = _span_logps(teacher_model, r_inputs, r_labels, r_parent, average_log_prob, device)
