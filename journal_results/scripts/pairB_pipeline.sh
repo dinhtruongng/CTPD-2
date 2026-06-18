@@ -1,26 +1,31 @@
 #!/bin/bash
 # Pair B = Mistral-7B-Instruct-v0.3 (teacher) -> Llama-3.2-1B-Instruct (student)
-# Full pipeline, all from public instruct checkpoints (internally consistent).
-# Run each stage detached: `nohup bash <stage>.sh > log 2>&1 &`
+# All models = public instruct checkpoints (already SFT'd) — no extra SFT step.
 #
-# This file is a driver reference; each STAGE_* function mirrors a reference
-# script in script/training/ with Pair B paths + correct decoder block names.
+# LAUNCH ORDER (serial within each column, parallel across columns):
+#   1. tea_pos         2. tea_neg         3. dpo_baseline  (parallel)
+#   4. weight_full     5. weight_lite                       (parallel, AFTER tea_pos & tea_neg)
+#   6. train_ctpd      7. train_lite                        (parallel, AFTER weights)
+#   8. eval
+#
+# Run detached: `nohup bash pairB_pipeline.sh STAGE > logs/pairB_STAGE.log 2>&1 &`
 set -e
 
 ROOT=~/CTPD-2
 JR=$ROOT/journal_results
 TEACHER=$JR/models/mistralai_Mistral-7B-Instruct-v0.3
 STUDENT=$JR/models/meta-llama_Llama-3.2-1B-Instruct
-DATA=$JR/data/pairB            # output of build_dataset.py (has parent_list cols)
+DATA=$JR/data/pairB
 export CUDA_VISIBLE_DEVICES=4,5,6,7
 
 cd $ROOT/src/prefkd
+mkdir -p $JR/weights $JR/logs
 
 STAGE=${1:-help}
 
 case "$STAGE" in
 
-# ---- 1. positive teacher: Mistral + DPO -----------------------------------
+# ---- 1. positive teacher: Mistral + DPO ------------------------------------
 tea_pos)
   python3 -u train.py model=dpo \
     model.policy_name_or_path=$TEACHER \
@@ -39,7 +44,7 @@ tea_pos)
     trainer=FSDPTrainer sample_during_eval=false \
     datasets=$DATA ;;
 
-# ---- 2. negative teacher: Mistral + reverse DPO ---------------------------
+# ---- 2. negative teacher: Mistral + reverse DPO ----------------------------
 tea_neg)
   python3 -u train.py model=dpo \
     model.policy_name_or_path=$TEACHER \
@@ -59,7 +64,7 @@ tea_neg)
     activation_checkpointing=false reverse_dataset=true \
     datasets=$DATA ;;
 
-# ---- 3. full-CTPD weight generation (pos vs neg teacher) -------------------
+# ---- 3. full-CTPD weight generation (pos vs neg teacher) --------------------
 weight_full)
   POS=${2:?pass positive ckpt dir}
   NEG=${3:?pass negative ckpt dir}
@@ -70,7 +75,7 @@ weight_full)
     --split train --batch_size 8 --num_gpus 4 \
     --average_log_prob 0 --teacher_all 0 --student_all 1 ;;
 
-# ---- 4. CTPD-Lite weight generation (single teacher) ----------------------
+# ---- 4. CTPD-Lite weight generation (single teacher, no DPO needed) ---------
 weight_lite)
   python3 $JR/scripts/weight_lite.py \
     --teacher_model $TEACHER --student_model $STUDENT \
@@ -78,7 +83,7 @@ weight_lite)
     --split train --batch_size 8 --num_gpus 4 \
     --average_log_prob 0 --student_all 1 --mu 1.0 ;;
 
-# ---- 5a. train student: full CTPD -----------------------------------------
+# ---- 5a. train student: full CTPD ------------------------------------------
 train_ctpd)
   WDATA=${2:?pass weighted dataset dir}
   python3 -u train.py model=KD_tisdpo \
@@ -101,7 +106,7 @@ train_ctpd)
     trainer=FSDPTrainer sample_during_eval=false \
     datasets=$WDATA ;;
 
-# ---- 5b. train student: CTPD-Lite -----------------------------------------
+# ---- 5b. train student: CTPD-Lite ------------------------------------------
 train_lite)
   WDATA=${2:?pass lite weighted dataset dir}
   python3 -u train.py model=KD_tisdpo \
@@ -124,7 +129,7 @@ train_lite)
     trainer=FSDPTrainer sample_during_eval=false \
     datasets=$WDATA ;;
 
-# ---- DPO baseline (student only) ------------------------------------------
+# ---- DPO baseline (student only) -------------------------------------------
 dpo_baseline)
   python3 -u train.py model=dpo \
     model.policy_name_or_path=$STUDENT \
@@ -144,5 +149,5 @@ dpo_baseline)
     datasets=$DATA ;;
 
 *)
-  echo "usage: $0 {tea_pos|tea_neg|weight_full POS NEG|weight_lite|train_ctpd WDATA|train_lite WDATA|dpo_baseline}" ;;
+  echo "usage: $0 {tea_pos|tea_neg|dpo_baseline|weight_full POS NEG|weight_lite|train_ctpd WDATA|train_lite WDATA}" ;;
 esac
